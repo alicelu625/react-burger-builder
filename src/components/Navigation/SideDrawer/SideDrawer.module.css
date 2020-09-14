@@ -1,0 +1,33 @@
+/*small size screens*/
+.SideDrawer {
+    position: fixed;
+    width: 280px;
+    max-width: 70%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 200; /*above backdrop*/
+    background-color: white;
+    padding: 32px 16px; /*32px top/bottom, 16px left/right*/
+    box-sizing: border-box;
+    transition: transform 0.3s ease-out; /*react to changes of transform propertt & animate 300ms with ease out timing*/
+}
+
+@media (min-width: 500px) {
+    .SideDrawer {
+        display: none; /*can't see sidedrawer on bigger devices*/
+    }
+}
+
+.Open {
+    transform: translateX(0); /*shift sidedrawer to position*/
+}
+
+.Close {
+    transform: translateX(-100%); /*slide to left off screen*/
+}
+
+.Logo {
+    margin-bottom: 32px;
+    height: 11%;
+}

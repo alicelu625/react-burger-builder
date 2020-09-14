@@ -1,0 +1,17 @@
+/*base: mobile*/
+.NavigationItems {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: column; /*items stacked on top*/
+    align-items: center;
+    height: 100%;
+}
+
+/*bigger screens*/
+@media (min-width: 500px) {
+    .NavigationItems {
+        flex-flow: row;
+    }
+}
