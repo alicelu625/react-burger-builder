@@ -1,7 +1,7 @@
 
 ## Burger Builder Application (React)
 
-***This application is still in progress.***
+***This application is still being worked on.***
 
 The Burger Builder application allows the user to build a burger by adding/removing ingredients. An order summary is displayed upon checkout. For mobile support (smaller screens), a toggle menu is implemented in place of the toolbar on the top.
 
