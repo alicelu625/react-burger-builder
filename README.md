@@ -16,7 +16,6 @@ What I used:
 * HTML5
 * CSS3 w/ mobile first approach
 * Webpack
-* Routing
 * Database: Firebase
 * Axios
 
