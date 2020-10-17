@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.module.css';
 import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
-import input from '../../../components/UI/Input/Input';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/index';
 
 class ContactData extends Component {
     state = {
@@ -84,19 +87,18 @@ class ContactData extends Component {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ],
                 },
-                value: '',
+                value: 'fastest',
                 validation: {},
                 valid: true
             }
         },
-        formIsValid: false,
-        loading: false
+        formIsValid: false
     }
 
     orderHandler = (event) => {
         //prevent default to send a request (which reloads the form)
         event.preventDefault();
-        this.setState({loading: true}); //show spinner when continued
+        //this.setState({loading: true}); //show spinner when continued
         //extract input value
         const formData = {};
         for (let formElementIdentifier in this.state.orderForm) {
@@ -104,10 +106,11 @@ class ContactData extends Component {
         }
         //create order object
         const order = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ings,
             price: this.props.price, //on real application, should calculate price on server
             orderData: formData
         }
+        /*removed because Redux implemented this action
         //POST request
         axios.post('/orders.json', order) //path gets appended to baseURL path
             .then(response => {
@@ -117,7 +120,8 @@ class ContactData extends Component {
             })
             .catch(error => {
                 this.setState({loading: false}); //stop spinner
-            });
+            });*/
+        this.props.onOrderBurger(order);
     }
 
     //check if form is valid
@@ -199,7 +203,7 @@ class ContactData extends Component {
             </form>
         );
         //if loading, then show spinner
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Spinner/>;
         }
         return (
@@ -211,4 +215,18 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    return {
+        ings: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
