@@ -4,6 +4,7 @@
 ***This application is still being worked on.***
 
 Next updates:
+* Improve UI
 * Clean up code
 * Test using testing tools
 
