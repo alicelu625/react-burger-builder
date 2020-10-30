@@ -16,8 +16,12 @@ What I used:
 * HTML5
 * CSS3 w/ mobile first approach
 * Webpack
+<<<<<<< HEAD
 * Routing
 * Database: Google Firebase
+=======
+* Database: Firebase
+>>>>>>> bc3d49887371e74377a67d1c8d70fb0067ae2871
 * Axios
 * Firebase Authentication
 
