@@ -25,7 +25,7 @@ const buildControls = (props) => (
             className={classes.CheckoutButton}
             disabled={!props.purchasable}
             onClick={props.checkedOut}>
-            CHECKOUT
+            {props.isAuth ? 'CHECKOUT' : 'SIGN UP/SIGN IN TO CHECKOUT'}
         </button>
     </div>
 );

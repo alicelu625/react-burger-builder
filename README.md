@@ -4,8 +4,8 @@
 ***This application is still being worked on.***
 
 Next updates:
-* Authentification
 * Clean up code
+* Test using testing tools
 
 What I used: 
 * React 16
@@ -17,8 +17,9 @@ What I used:
 * CSS3 w/ mobile first approach
 * Webpack
 * Routing
-* Database: Firebase
+* Database: Google Firebase
 * Axios
+* Firebase Authentication
 
 
 The Burger Builder application allows the user to build a burger by adding/removing ingredients. An order summary is displayed upon checkout. For mobile support (smaller screens), a toggle menu is implemented in place of the toolbar on the top.

@@ -24,11 +24,11 @@ export const purchaseBurgerStart = () => {
 };
 
 //async action
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
     return dispatch => {
         dispatch(purchaseBurgerStart());
         //POST request
-        axios.post('/orders.json', orderData) //path gets appended to baseURL path
+        axios.post('/orders.json?auth=' + token, orderData) //path gets appended to baseURL path
             .then(response => {
                 dispatch(purchaseBurgerSuccess(response.data.name, orderData));
             })
@@ -65,10 +65,13 @@ export const fetchOrdersStart = () => {
     };
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
-        axios.get('/orders.json')
+        //string to pass onto get request
+        //&orderBy: ordering can be used to filter, &equalTo: the key you're ordering by
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('/orders.json' + queryParams)
             .then(res => {
                 const fetchedOrders = [];
                 //turn orders object into array of single order objects
