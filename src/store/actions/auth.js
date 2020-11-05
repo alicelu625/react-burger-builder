@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
+import * as constants from '../../const';
 
 export const authStart = () => {
     return {
@@ -54,14 +55,13 @@ export const auth = (email, password, isSignup) => {
             returnSecureToken: true
         }
         //default url is the signup url
-        let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC0UlXDmnlnfsrs8UYXQ_KARtuVUcmeIYM';
+        let url = constants.FIREBASE_SIGNUP_URL;
         //if not in signup mode, set url to sign in url endpoint
         if (!isSignup) {
-            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC0UlXDmnlnfsrs8UYXQ_KARtuVUcmeIYM'
+            url = constants.FIREBASE_SIGNIN_URL;
         }
         axios.post(url, authData)
             .then(response => {
-                console.log(response);
                 //store token & expiration time in local storage
                 localStorage.setItem('token', response.data.idToken);
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);

@@ -7,6 +7,7 @@ import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import * as actions from '../../store/actions/auth';
+import {updateObject, checkValidity} from '../../shared/utility';
 
 class Auth extends Component {
     state = {
@@ -50,34 +51,18 @@ class Auth extends Component {
             this.props.onSetAuthRedirectPath(); //resets path to '/'
         }
     }
-    
-    //check if form is valid
-    checkValidity(value, rules) {
-        let isValid = true;
-
-        /*alternative to checking if element has validation rules (dropdown doesn't)
-        //element is valid if no validation rules
-        if (!rules) {
-            return true;
-        }*/
-
-        //if empty string, then isValid is false
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid; //trim white spaces
-        }
-        //check minimum length
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-        //check max length
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-        return isValid;
-    }
 
     //handle form user input
     inputChangedHandler = (event, controlName) => {
+        const updatedControls = updateObject(this.state.controls, {
+            [controlName]: updateObject(this.state.controls[controlName], {
+                //set properties
+                value: event.target.value,
+                valid: checkValidity(event.target.value, this.state.controls[controlName].validation),
+                touched: true
+            })
+        });
+        /*implemented using updateObject above
         const updatedControls = {
             ...this.state.controls, //copies all elements in state controls
             [controlName]: {  //overwrite the control
@@ -87,7 +72,7 @@ class Auth extends Component {
                 valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
                 touched: true
             }
-        }
+        }*/
         this.setState({controls: updatedControls});
     }
 

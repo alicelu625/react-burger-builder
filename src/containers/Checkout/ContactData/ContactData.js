@@ -8,6 +8,7 @@ import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions/index';
+import {updateObject, checkValidity} from '../../../shared/utility';
 
 class ContactData extends Component {
     state = {
@@ -125,44 +126,28 @@ class ContactData extends Component {
         this.props.onOrderBurger(order, this.props.token);
     }
 
-    //check if form is valid
-    checkValidity(value, rules) {
-        let isValid = true;
-
-        /*alternative to checking if element has validation rules (dropdown doesn't)
-        //element is valid if no validation rules
-        if (!rules) {
-            return true;
-        }*/
-
-        //if empty string, then isValid is false
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid; //trim white spaces
-        }
-        //check minimum length
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-        //check max length
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-        return isValid;
-    }
-
     //handle form user input
     inputChangedHandler = (event, inputIdentifier) => {
+        const updatedFormElement = updateObject(this.state.orderForm[inputIdentifier], {
+            //properties to overwrite
+            value: event.target.value,
+            valid: checkValidity(event.target.value, this.state.orderForm[inputIdentifier].validation),
+            touched: true
+        });
+        const updatedOrderForm = updateObject(this.state.orderForm, {
+            [inputIdentifier]: updatedFormElement
+        });
+        /*
         const updatedOrderForm = {
             ...this.state.orderForm //copy object distributing all properties
-        };
+        };*/
         //also clone properties inside of selected order form element deeply
-        const updatedFormElement = {
-            ...updatedOrderForm[inputIdentifier] //distribute properties
-        };
+        //...updatedOrderForm[inputIdentifier] //distribute properties
+        /*
         updatedFormElement.value = event.target.value;
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedFormElement.touched = true;
-        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        updatedOrderForm[inputIdentifier] = updatedFormElement;*/
 
         //check if overall form is valid
         let formIsValid = true;

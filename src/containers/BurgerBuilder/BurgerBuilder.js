@@ -14,7 +14,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
 import * as actions from '../../store/actions/index';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
     state = {
         //ingredients: null,
         //totalPrice: 4, //base price: $4 (no matter what ingredient)
@@ -26,7 +26,6 @@ class BurgerBuilder extends Component {
     
     //fetch data
     componentDidMount () {
-        console.log(this.props);
         /*remove because moved into action creator
         axios.get('https://react-burger-builder-c740a.firebaseio.com/ingredients.json')
             .then(response => {

@@ -3,10 +3,10 @@ import Aux from '../../../hoc/Auxiliary/Auxiliary';
 import Button from '../../UI/Button/Button';
 
 class OrderSummary extends Component {
-    //optional, can change back to functional component if don't include this
+    /*optional, can change back to functional component if don't include this
     componentDidUpdate() {
         console.log('[OrderSummary] DidUpdate');
-    }
+    }*/
     
     render() {
         const ingredientSummary = Object.keys(this.props.ingredients)
