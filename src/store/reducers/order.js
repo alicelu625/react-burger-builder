@@ -4,7 +4,8 @@ import {updateObject} from '../../shared/utility';
 const initialState = {
     orders: [], //put orders in array
     loading: false, //in the process of ordering or done
-    purchased: false
+    purchased: false, 
+    showBurger: false
 };
 
 const purchaseInit = (state, action) => {

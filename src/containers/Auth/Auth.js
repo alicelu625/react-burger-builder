@@ -50,6 +50,7 @@ class Auth extends Component {
         if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
             this.props.onSetAuthRedirectPath(); //resets path to '/'
         }
+        this.props.onAuthSwitchMode();
     }
 
     //handle form user input
@@ -62,17 +63,6 @@ class Auth extends Component {
                 touched: true
             })
         });
-        /*implemented using updateObject above
-        const updatedControls = {
-            ...this.state.controls, //copies all elements in state controls
-            [controlName]: {  //overwrite the control
-                ...this.state.controls[controlName], //copy all properties
-                //set properties
-                value: event.target.value,
-                valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
-                touched: true
-            }
-        }*/
         this.setState({controls: updatedControls});
     }
 
@@ -84,6 +74,7 @@ class Auth extends Component {
 
     //when switch to sign in/sign up button clicked
     switchAuthModeHandler = () => {
+        this.props.onAuthSwitchMode();
         this.setState(prevState => {
             return {isSignup: !prevState.isSignup};
         });
@@ -119,11 +110,25 @@ class Auth extends Component {
 
         //display error message
         let errorMessage = null; //default
-        //if error, use error message from Firebase
+        //if error, display custom error messages
         if (this.props.error) {
-            errorMessage = (
-                <p>{this.props.error.message}</p>
-            );
+            switch (this.props.error.message) {
+                case 'INVALID_EMAIL':
+                    errorMessage = <p style={{color: 'red'}}>You have entered an invalid email.</p>
+                    break;
+                case 'EMAIL_EXISTS': 
+                    errorMessage = <p style={{color: 'red'}}>This email address is already being used.</p>;
+                    break;
+                case 'INVALID_PASSWORD':
+                    errorMessage = <p style={{color: 'red'}}>You have entered an invalid email or password.</p>;
+                    break;
+                case 'EMAIL_NOT_FOUND':
+                    errorMessage = <p style={{color: 'red'}}>You have entered an invalid email or password.</p>;
+                    break;
+                //if no custom message, display error message from Firebase
+                default:
+                    errorMessage = <p style={{color: 'red'}}>{this.props.error.message}</p>;
+            }
         }
 
         //if authenticated, Redirect
@@ -131,15 +136,21 @@ class Auth extends Component {
         if (this.props.isAuthenticated) {
             authRedirect = <Redirect to={this.props.authRedirectPath}/>;
         }
-
+        let message = 'Already have an account? ';
+        if (this.state.isSignup === false) {
+            message = 'Don\'t have an account? ';
+        }
         return (
             <div className={classes.Auth}>
+                {this.state.isSignup ? <p className={classes.title}>SIGN UP</p>
+                    : <p className={classes.title}>SIGN IN</p>}
                 {authRedirect}
                 {errorMessage}
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">SUBMIT</Button>
                 </form>
+                {message}
                 <Button
                     clicked={this.switchAuthModeHandler}
                     btnType="Danger">
@@ -163,7 +174,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup)),
-        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
+        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
+        onAuthSwitchMode: () => dispatch(actions.authSwitchMode())
     };
 };
 

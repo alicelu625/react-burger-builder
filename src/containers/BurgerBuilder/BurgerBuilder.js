@@ -1,6 +1,3 @@
-/*Burger Builder page containing graphical representation of burger,
-build controls, etc.*/
-
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
@@ -16,24 +13,11 @@ import * as actions from '../../store/actions/index';
 
 export class BurgerBuilder extends Component {
     state = {
-        //ingredients: null,
-        //totalPrice: 4, //base price: $4 (no matter what ingredient)
-        //purchasable: false, //false until at least 1 ingredient added
-        purchasing: false, //false until Checkout button is clicked
-        //loading: false, //true show spinner, false show order summary
-        //error: false
+        purchasing: false
     }
     
     //fetch data
     componentDidMount () {
-        /*remove because moved into action creator
-        axios.get('https://react-burger-builder-c740a.firebaseio.com/ingredients.json')
-            .then(response => {
-                this.setState({ingredients: response.data});
-            })
-            .catch(error => {
-                this.setState({error: true});
-            });*/
         this.props.onInitIngredients();
     }
 
@@ -48,45 +32,8 @@ export class BurgerBuilder extends Component {
             .reduce((sum, el) => { //(sum, new element number)
                 return sum + el;
             }, 0);
-        //this.setState({purchasable: sum > 0}); //true if sum > 0
         return sum > 0;
     }
-
-    /*removed because Redux implemented this action
-    //adding an ingredient
-    addIngredientHandler = (type) => {
-        const oldCount = this.state.ingredients[type]; //get count of ingredient
-        const updatedCount = oldCount + 1; //add count for ingredient
-        const updatedIngredients = { //create new JavaScript object
-            ...this.state.ingredients //distribute properties of old ingredient state into new one
-        };
-        updatedIngredients[type] = updatedCount; //set value to updated count
-        const priceAddition = INGREDIENT_PRICES[type] //fetch price of ingredient type
-        const oldPrice = this.state.totalPrice; //get old price
-        const newPrice = oldPrice + priceAddition; //add price to old price
-        this.setState({totalPrice: newPrice, ingredients: updatedIngredients}); //update states
-        this.updatePurchaseState(updatedIngredients);
-    }*/
-
-    /*removed because Redux implemented this action
-    //removing an ingredient
-    removeIngredientHandler = (type) => {
-        const oldCount = this.state.ingredients[type]; //get count of ingredient
-        //check if ingredient count is 0
-        if (oldCount <= 0) {
-            return;
-        }
-        const updatedCount = oldCount - 1; //decrement count for ingredient
-        const updatedIngredients = { //create new JavaScript object
-            ...this.state.ingredients //distribute properties of old ingredient state into new one
-        };
-        updatedIngredients[type] = updatedCount; //set value to updated count
-        const priceDeduction = INGREDIENT_PRICES[type] //fetch price of ingredient type
-        const oldPrice = this.state.totalPrice; //get old price
-        const newPrice = oldPrice - priceDeduction; //deduct price from old price
-        this.setState({totalPrice: newPrice, ingredients: updatedIngredients}); //update states
-        this.updatePurchaseState(updatedIngredients);
-    }*/
 
     //when Checkout button is clicked
     purchaseHandler = () => {
@@ -109,27 +56,6 @@ export class BurgerBuilder extends Component {
 
     //when continue button in order summary is clicked
     purchaseContinueHandler = () => {
-        /*remove because now get ingredients with Redux instead of query params
-        //alert('You continue!');
-        const queryParams = [];
-        //loop through all the properties
-        for (let i in this.state.ingredients) {
-            //push each ingredients in queryParams
-            //property name = property value
-            //encode component so they can be used in URL - relevant for whitespace, etc.
-            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
-        }
-        //also encode price
-        queryParams.push('price=' + this.state.totalPrice)
-        //generate string of ingredients
-        const queryString = queryParams.join('&');
-
-        //push checkout page to the stack
-        this.props.history.push({
-            pathname:'/checkout',
-            search: '?' + queryString //passes ingredients into URL
-        });
-        */
        this.props.onInitPurchase();
        this.props.history.push('/checkout');
     }
@@ -172,12 +98,6 @@ export class BurgerBuilder extends Component {
                 purchaseContinued={this.purchaseContinueHandler}
                 price={this.props.price}/>;
         }
-
-        /*removed because now not doing anything asynchronously when viewing modal (order summary)
-        //if loading = true, then show spinner
-        if(this.state.loading) {
-            orderSummary = <Spinner />;
-        }*/
 
         return (
             <Aux>

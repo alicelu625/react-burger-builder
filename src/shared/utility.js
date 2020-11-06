@@ -9,12 +9,6 @@ export const updateObject = (oldObject, updatedProperties) => {
 export const checkValidity = (value, rules) => {
     let isValid = true;
 
-    /*alternative to checking if element has validation rules (dropdown doesn't)
-    //element is valid if no validation rules
-    if (!rules) {
-        return true;
-    }*/
-
     //if empty string, then isValid is false
     if (rules.required) {
         isValid = value.trim() !== '' && isValid; //trim white spaces

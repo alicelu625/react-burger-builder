@@ -6,33 +6,9 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import ContactData from '../Checkout/ContactData/ContactData';
 
 class Checkout extends Component {
-    /*remove because states now managed in Redux
     state = {
-        ingredients: null,
-        price: 0
+        showBurger: true
     }
-    */
-
-    /*remove because now get ingredients using Redux
-    //extract URL
-    UNSAFE_componentWillMount() {
-        const query = new URLSearchParams(this.props.location.search);
-        const ingredients = {}; //to store ingredients
-        let price = 0;
-        //format: ['salad', '1']
-        for (let param of query.entries()) {
-            //if it is price, don't add to ingredient object
-            if (param[0] === 'price') {
-                //extract price & store
-                price = param[1];
-            } else { 
-                ingredients[param[0]] = +param[1]; //turns into number with a +
-            }
-        }
-        this.setState({ingredients: ingredients, totalPrice: price});
-    }
-    */
-
     //go back to burger builder when CANCEL clicked
     checkoutCancelledHandler = () => {
         this.props.history.goBack();
@@ -40,7 +16,14 @@ class Checkout extends Component {
 
     //will load contactData component when CONTINUE clicked
     checkoutContinuedHandler = () => {
-        this.props.history.replace('/checkout/contact-data');   
+        this.props.history.replace('/checkout/contact-data');
+        this.setState({showBurger: false});
+    }
+
+    //show burger again & no contact data when pressed back from contact data
+    goBackHandler = () => {
+        this.setState({showBurger: true});
+        this.props.history.replace('/checkout');
     }
 
     render() {
@@ -52,17 +35,15 @@ class Checkout extends Component {
                 <div>
                     {purchasedRedirect}
                     <CheckoutSummary 
+                        showBurger={this.state.showBurger}
                         ingredients={this.props.ings}
                         checkoutCancelled={this.checkoutCancelledHandler}
                         checkoutContinued={this.checkoutContinuedHandler}
+                        goBack={this.goBackHandler}
                     />
                     <Route 
                         path={this.props.match.path + '/contact-data'}
                         component={ContactData}
-                        /*remove because no longer need to use price (Redux)
-                        //can pass props by rendering it manually
-                        render={(props) => (<ContactData ingredients={this.state.ings} price={this.state.totalPrice} {...props}/>)}
-                        */
                     /> 
                 </div>
             );

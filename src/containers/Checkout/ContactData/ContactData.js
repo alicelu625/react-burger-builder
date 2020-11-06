@@ -17,7 +17,7 @@ class ContactData extends Component {
                 elementType: 'input',
                 elementConfig: { //configuration - attributes set up for the chosen HTML tag
                     type: 'text',
-                    placeholder: 'Your Name'
+                    placeholder: 'Your Name (required)'
                 },
                 value: '',
                 validation: {
@@ -34,9 +34,9 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true
+                    //required: true
                 },
-                valid: false,
+                valid: true,
                 touched: false
             },
             zipCode: {
@@ -47,11 +47,11 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true,
-                    minLength: 5,
-                    maxLength: 5
+                    //required: true,
+                    //minLength: 5,
+                    //maxLength: 5
                 },
-                valid: false,
+                valid: true,
                 touched: false
             },
             country: {
@@ -62,16 +62,16 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true
+                    //required: true
                 },
-                valid: false,
+                valid: true,
                 touched: false
             },
             email: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'email',
-                    placeholder: 'Your E-mail'
+                    placeholder: 'Your E-mail (required)'
                 },
                 value: '',
                 validation: {
@@ -99,7 +99,7 @@ class ContactData extends Component {
     orderHandler = (event) => {
         //prevent default to send a request (which reloads the form)
         event.preventDefault();
-        //this.setState({loading: true}); //show spinner when continued
+
         //extract input value
         const formData = {};
         for (let formElementIdentifier in this.state.orderForm) {
@@ -108,21 +108,10 @@ class ContactData extends Component {
         //create order object
         const order = {
             ingredients: this.props.ings,
-            price: this.props.price, //on real application, should calculate price on server
+            price: this.props.price,
             orderData: formData,
             userId: this.props.userId
         }
-        /*removed because Redux implemented this action
-        //POST request
-        axios.post('/orders.json', order) //path gets appended to baseURL path
-            .then(response => {
-                this.setState({loading: false}); //stop spinner
-                //redirect once submitted
-                this.props.history.push('/');
-            })
-            .catch(error => {
-                this.setState({loading: false}); //stop spinner
-            });*/
         this.props.onOrderBurger(order, this.props.token);
     }
 
@@ -137,20 +126,10 @@ class ContactData extends Component {
         const updatedOrderForm = updateObject(this.state.orderForm, {
             [inputIdentifier]: updatedFormElement
         });
-        /*
-        const updatedOrderForm = {
-            ...this.state.orderForm //copy object distributing all properties
-        };*/
-        //also clone properties inside of selected order form element deeply
-        //...updatedOrderForm[inputIdentifier] //distribute properties
-        /*
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
-        updatedOrderForm[inputIdentifier] = updatedFormElement;*/
 
         //check if overall form is valid
         let formIsValid = true;
+        
         //loop through all element's valid state
         for (let inputIdentifier in updatedOrderForm) {
             formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;

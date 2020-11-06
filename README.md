@@ -1,12 +1,6 @@
 
 ## Burger Builder Application (React)
 
-***This application is still being worked on.***
-
-Next updates:
-* Improve UI
-* Clean up code
-
 What I used: 
 * React 16
 * Redux
@@ -22,7 +16,7 @@ What I used:
 * Unit Tests (Jest, Enzyme)
 
 
-The Burger Builder application allows the user to build a burger by adding/removing ingredients. An order summary is displayed upon checkout. For mobile support (smaller screens), a toggle menu is implemented in place of the toolbar on the top.
+The Burger Builder application allows a user to build a burger by adding/removing ingredients and place the order if authenticated. An order summary is displayed upon checkout & user can proceed to checkout by filling out contact data. For mobile support (smaller screens), a toggle menu is implemented in place of the toolbar on the top.
 
 Demo hosted via GitHub Pages: https://alicelu625.github.io/react-burger-builder/ 
 
