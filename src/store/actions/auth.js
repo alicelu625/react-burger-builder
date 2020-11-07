@@ -1,6 +1,5 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-import * as constants from '../../const';
 
 export const authSwitchMode = () => {
     return {
@@ -61,10 +60,10 @@ export const auth = (email, password, isSignup) => {
             returnSecureToken: true
         }
         //default url is the signup url
-        let url = constants.FIREBASE_SIGNUP_URL;
+        let url = process.env.FIREBASE_SIGNUP_URL;
         //if not in signup mode, set url to sign in url endpoint
         if (!isSignup) {
-            url = constants.FIREBASE_SIGNIN_URL;
+            url = process.env.FIREBASE_SIGNIN_URL;
         }
         axios.post(url, authData)
             .then(response => {
